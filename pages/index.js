@@ -1,64 +1,43 @@
-import Head from 'next/head'
-import styles from '../styles/Home.module.css'
+/* eslint-disable import/no-unresolved */
+/* eslint-disable react/button-has-type */
+/* eslint-disable no-shadow */
+
+import {
+  Button,
+  Head,
+  ButtonGroup,
+  Heading,
+  Text,
+  Code,
+  Box,
+  Flex,
+} from '@chakra-ui/react';
+import { FastFeedbackIcon } from 'public/icons';
+
+import { useAuth } from '@/lib/auth';
+import EmptyState from '@/components/EmptyState';
 
 export default function Home() {
+  const auth = useAuth();
   return (
-    <div className={styles.container}>
-      <Head>
-        <title>fastFeedBack</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+    <Flex
+      as="main"
+      direction="column"
+      align="center"
+      justify="center"
+      w="full"
+      maxW="3OOpx"
+      h="100vh"
+    >
+      <FastFeedbackIcon color="black.500" boxSize="64px" />
 
-      <main className={styles.main}>
-        <h1 className={styles.title}>
-          Fast Feedback
-        </h1>
-
-        <p className={styles.description}>
-          Hello, World!
-        </p>
-
-        <div className={styles.grid}>
-          <a href="https://nextjs.org/docs" className={styles.card}>
-            <h3>Documentation &rarr;</h3>
-            <p>Find in-depth information about Next.js features and API.</p>
-          </a>
-
-          <a href="https://nextjs.org/learn" className={styles.card}>
-            <h3>Learn &rarr;</h3>
-            <p>Learn about Next.js in an interactive course with quizzes!</p>
-          </a>
-
-          <a
-            href="https://github.com/vercel/next.js/tree/master/examples"
-            className={styles.card}
-          >
-            <h3>Examples &rarr;</h3>
-            <p>Discover and deploy boilerplate example Next.js projects.</p>
-          </a>
-
-          <a
-            href="https://vercel.com/import?filter=next.js&utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-          >
-            <h3>Deploy &rarr;</h3>
-            <p>
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
-        </div>
-      </main>
-
-      <footer className={styles.footer}>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{' '}
-          <img src="/vercel.svg" alt="Vercel Logo" className={styles.logo} />
-        </a>
-      </footer>
-    </div>
-  )
+      {auth.user ? (
+        <Button onClick={(e) => auth.signout()}>Sign Out</Button>
+      ) : (
+        <Button mt={4} size="sm" onClick={(e) => auth.signinWithGithub()}>
+          Sign In
+        </Button>
+      )}
+    </Flex>
+  );
 }

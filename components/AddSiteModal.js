@@ -19,14 +19,29 @@ import {
 
 import { useForm } from 'react-hook-form';
 import { createSite } from '@/lib/db';
+import { useAuth } from '@/lib/auth';
 
 const AddSiteModal = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const initialRef = React.useRef();
+  const toast = useToast();
+  const auth = useAuth();
   const { register, handleSubmit } = useForm();
-  const onCreateSite = (data) => {
-    createSite(data);
+  const onCreateSite = ({ name, url }) => {
+    createSite({
+      authorId: auth.user.uid,
+      createdAt: new Date().toISOString(),
+      name,
+      url,
+    });
+    toast({
+      title: 'Success!',
+      description: "We've added your site.",
+      status: 'success',
+      duration: 5000,
+      isClosable: true,
+    });
     onClose();
   };
 
@@ -45,9 +60,8 @@ const AddSiteModal = () => {
             <FormControl>
               <FormLabel>Name</FormLabel>
               <Input
-                ref={initialRef}
                 placeholder="My Site"
-                name="site"
+                name="name"
                 ref={register({ required: 'Required' })}
               />
             </FormControl>

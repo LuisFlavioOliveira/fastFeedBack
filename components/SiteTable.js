@@ -1,17 +1,6 @@
 /* eslint-disable react/prop-types */
 import React from 'react';
-import {
-  Box,
-  Link,
-  Skeleton,
-  Table,
-  Thead,
-  Tbody,
-  Tr,
-  Th,
-  Td,
-  TableCaption,
-} from '@chakra-ui/react';
+import { Link, Table, Thead, Tbody, Tr, Th, Td } from '@chakra-ui/react';
 
 import { parseISO, format } from 'date-fns';
 

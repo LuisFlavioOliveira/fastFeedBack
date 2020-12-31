@@ -14,13 +14,7 @@ import SiteTableSkeleton from '@/components/SiteTableSkeleton';
 import DashboardShell from '@/components/DashboardShell';
 import SiteTable from '@/components/SiteTable';
 
-import {
-  useQuery,
-  useMutation,
-  useQueryClient,
-  QueryClient,
-  QueryClientProvider,
-} from 'react-query';
+import { useQuery } from 'react-query';
 
 export default function Dashboard() {
   // call the custom hook to abort a fetch and store the signal

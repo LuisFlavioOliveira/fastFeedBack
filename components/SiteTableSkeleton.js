@@ -1,10 +1,10 @@
 /* eslint-disable react/prop-types */
 import React from 'react';
-import { Box, Skeleton } from '@chakra-ui/react';
-import { Table, Tr, Th, Td } from './Table';
+
+import { Table, Thead, Tbody, Tr, Th, Td, Skeleton } from '@chakra-ui/react';
 
 const SkeletonRow = ({ width }) => (
-  <Box as="tr">
+  <Tr>
     <Td>
       <Skeleton height="10px" w={width} my={4} />
     </Td>
@@ -17,27 +17,27 @@ const SkeletonRow = ({ width }) => (
     <Td>
       <Skeleton height="10px" w={width} my={4} />
     </Td>
-  </Box>
+  </Tr>
 );
 
 const SiteTableSkeleton = () => (
-  <Table>
-    <thead>
-      <Tr>
+  <Table variant="simple" backgroundColor="white">
+    <Thead>
+      <Tr backgroundColor="teal.200">
         <Th>Name</Th>
         <Th>Site Link</Th>
         <Th>Feedback Link</Th>
         <Th>Date Added</Th>
         <Th />
       </Tr>
-    </thead>
-    <tbody>
+    </Thead>
+    <Tbody>
       <SkeletonRow width="75px" />
       <SkeletonRow width="125px" />
       <SkeletonRow width="50px" />
       <SkeletonRow width="100px" />
       <SkeletonRow width="75px" />
-    </tbody>
+    </Tbody>
   </Table>
 );
 

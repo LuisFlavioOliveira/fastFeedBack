@@ -2,6 +2,8 @@
 /* eslint-disable react/button-has-type */
 /* eslint-disable no-shadow */
 
+import React from 'react';
+
 import { useAuth } from '@/lib/auth';
 
 import fetcher from '@/utils/fetcher';
@@ -27,10 +29,12 @@ export default function Dashboard() {
   const auth = useAuth();
 
   // Access the client
-  const { status, error, data } = useQuery('sites', () =>
-    fetcher('/api/sites', signal)
+  const { status, error, data } = useQuery(
+    'sites',
+    () => fetcher('/api/sites', signal),
+    { refetchOnWindowFocus: false }
   );
-  console.log(data?.sites);
+  console.log(data);
 
   if (status === 'error') {
     return <span>An error has occurred: {error.message}</span>;

@@ -29,10 +29,8 @@ export default function Dashboard() {
   const auth = useAuth();
 
   // Access the client
-  const { status, error, data } = useQuery(
-    'sites',
-    () => fetcher('/api/sites', signal),
-    { refetchOnWindowFocus: false }
+  const { status, error, data } = useQuery('sites', () =>
+    fetcher('/api/sites', signal)
   );
   console.log(data);
 

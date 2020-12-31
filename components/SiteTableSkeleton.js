@@ -1,18 +1,7 @@
 /* eslint-disable react/prop-types */
 import React from 'react';
 
-import {
-  Table,
-  Thead,
-  Tbody,
-  Tr,
-  Th,
-  Td,
-  TableCaption,
-  Skeleton,
-  SkeletonCircle,
-  SkeletonText,
-} from '@chakra-ui/react';
+import { Table, Thead, Tbody, Tr, Th, Td, Skeleton } from '@chakra-ui/react';
 
 const SkeletonRow = ({ width }) => (
   <Tr>

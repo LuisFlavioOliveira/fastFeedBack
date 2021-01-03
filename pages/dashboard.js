@@ -1,94 +1,50 @@
-/* eslint-disable prefer-destructuring */
-/* eslint-disable react/prop-types */
-/* eslint-disable react/jsx-props-no-spreading */
 /* eslint-disable import/no-unresolved */
 /* eslint-disable react/button-has-type */
 /* eslint-disable no-shadow */
+
 import React from 'react';
 
-import firebase from 'firebase/app';
-import 'firebase/firestore';
-
-import { useRouter } from 'next/router';
-
-import { useMutation, useQueryClient } from 'react-query';
-
-import Feedback from '@/components/Feedback';
-import { Box, Button, FormControl, FormLabel, Input } from '@chakra-ui/react';
-
 import { useAuth } from '@/lib/auth';
-import { createFeedback } from '@/lib/db';
-import { getAllFeedback, getAllSites } from '@/lib/db-admin';
 
-export async function getStaticProps(context) {
-  const siteId = context.params.siteId;
-  const feedback = await getAllFeedback(siteId);
+import fetcher from '@/utils/fetcher';
+import { useAbortController } from '@/utils/hooks';
 
-  return {
-    props: {
-      initialFeedback: JSON.parse(JSON.stringify(feedback)),
-    }, // will be passed to the page component as props
-  };
-}
+import EmptyState from '@/components/EmptyState';
+import SiteTableSkeleton from '@/components/SiteTableSkeleton';
+import DashboardShell from '@/components/DashboardShell';
+import SiteTable from '@/components/SiteTable';
 
-export async function getStaticPaths() {
-  const sites = await getAllSites();
-  const paths = sites.map((site) => ({
-    params: {
-      siteId: site.id.toString(),
-    },
-  }));
-  return {
-    paths,
-    fallback: false,
-  };
-}
+import { useQuery } from 'react-query';
 
-export default function SiteFeedBack({ initialFeedback }) {
+export default function Dashboard() {
+  // call the custom hook to abort a fetch and store the signal
+  const signal = useAbortController();
+
   const auth = useAuth();
-  const router = useRouter();
-  const inputEl = React.useRef(null);
-  const [allFeedback, setAllFeedback] = React.useState(initialFeedback);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const newFeedback = {
-      author: auth.user.name,
-      authorId: auth.user.uid,
-      siteId: router.query.siteId,
-      text: inputEl.current.value,
-      createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-      provider: auth.user.provider,
-      status: 'pending',
-    };
-    setAllFeedback([newFeedback, ...allFeedback]);
-    createFeedback(newFeedback);
-  };
-  return (
-    <Box
-      display="flex"
-      flexDirection="column"
-      width="full"
-      maxWidth="700px"
-      margin="0 auto"
-    >
-      <Box as="form" onSubmit={handleSubmit}>
-        <FormControl my={8}>
-          <FormLabel htmlFor="comment">Comment</FormLabel>
-          <Input
-            ref={inputEl}
-            type="comment"
-            id="comment"
-            placeholder="Leave a comment"
-          />
-          <Button mt={2} type="submit" fontWeight="bold">
-            Add Comment
-          </Button>
-        </FormControl>
-      </Box>
-      {allFeedback.map((feedback) => (
-        <Feedback key={feedback.id} {...feedback} />
-      ))}
-    </Box>
+  // Access the client
+  const { status, error, data } = useQuery('sites', () =>
+    fetcher('/api/sites', signal)
   );
+  console.log(data);
+
+  if (status === 'error') {
+    return <span>An error has occurred: {error.message}</span>;
+  }
+
+  if (status === 'loading') {
+    return (
+      <DashboardShell>
+        <SiteTableSkeleton />
+      </DashboardShell>
+    );
+  }
+
+  if (status === 'success') {
+    return (
+      <DashboardShell>
+        {data.sites ? <SiteTable sites={data.sites} /> : <EmptyState />}
+      </DashboardShell>
+    );
+  }
 }

@@ -11,8 +11,6 @@ import 'firebase/firestore';
 
 import { useRouter } from 'next/router';
 
-import { useMutation, useQueryClient } from 'react-query';
-
 import Feedback from '@/components/Feedback';
 import { Box, Button, FormControl, FormLabel, Input } from '@chakra-ui/react';
 
@@ -22,7 +20,7 @@ import { getAllFeedback, getAllSites } from '@/lib/db-admin';
 
 export async function getStaticProps(context) {
   const siteId = context.params.siteId;
-  const feedback = await getAllFeedback(siteId);
+  const { feedback } = await getAllFeedback(siteId);
 
   return {
     props: {
@@ -32,7 +30,7 @@ export async function getStaticProps(context) {
 }
 
 export async function getStaticPaths() {
-  const sites = await getAllSites();
+  const { sites } = await getAllSites();
   const paths = sites.map((site) => ({
     params: {
       siteId: site.id.toString(),
@@ -48,7 +46,6 @@ export default function SiteFeedBack({ initialFeedback }) {
   const auth = useAuth();
   const router = useRouter();
   const inputEl = React.useRef(null);
-  const [allFeedback, setAllFeedback] = React.useState(initialFeedback);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -61,7 +58,7 @@ export default function SiteFeedBack({ initialFeedback }) {
       provider: auth.user.provider,
       status: 'pending',
     };
-    setAllFeedback([newFeedback, ...allFeedback]);
+
     createFeedback(newFeedback);
   };
   return (
@@ -86,7 +83,7 @@ export default function SiteFeedBack({ initialFeedback }) {
           </Button>
         </FormControl>
       </Box>
-      {allFeedback.map((feedback) => (
+      {initialFeedback.map((feedback) => (
         <Feedback key={feedback.id} {...feedback} />
       ))}
     </Box>

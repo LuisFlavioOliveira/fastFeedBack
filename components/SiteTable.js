@@ -5,6 +5,7 @@ import { Link, Table, Thead, Tbody, Tr, Th, Td } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import { parseISO, format } from 'date-fns';
 
+// TODO: Must fix the bug with the NextLink
 const SiteTable = ({ sites }) => (
   <Table variant="simple" backgroundColor="white">
     <Thead>
@@ -21,7 +22,10 @@ const SiteTable = ({ sites }) => (
           <Td fontWeight="bold">{site.name}</Td>
           <Td>{site.url}</Td>
           <Td>
-            <NextLink href="/p/[siteId]" as={`/p/${site.id}`} passHref>
+            {/* <NextLink href="/p/[siteId]" as={`/p/${site.id}`} passHref>
+              <Link>View FeedBack</Link>
+            </NextLink> */}
+            <NextLink href={`/p/${encodeURIComponent(site.id)}`} passHref>
               <Link>View FeedBack</Link>
             </NextLink>
           </Td>

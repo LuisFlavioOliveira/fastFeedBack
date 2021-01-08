@@ -25,16 +25,30 @@ export default function Home() {
       direction="column"
       align="center"
       justify="center"
-      w="full"
-      maxW="3OOpx"
       h="100vh"
+      maxW="4OOpx"
+      margin="0 auto"
     >
-      <FastFeedbackIcon color="black.500" boxSize="64px" />
+      <FastFeedbackIcon color="black.500" boxSize="64px" mb={2} />
+      <Text mb={4}>
+        <Text as="span" fontWeight="bold" display="inline">
+          Fast Feedback
+        </Text>
+        It's the easiest way to add comments or reviews to your static site.
+        It's still a work-in-progress, but you can try it out by logging in.
+      </Text>
 
       {auth.user ? (
-        <Button onClick={(e) => auth.signout()}>Sign Out</Button>
+        <Button as="a" size="sm" fontWeight="bold" href="/dashboard">
+          View Dashboard
+        </Button>
       ) : (
-        <Button mt={4} size="sm" onClick={(e) => auth.signinWithGithub()}>
+        <Button
+          mt={4}
+          size="sm"
+          fontWeight="bold"
+          onClick={() => auth.signinWithGithub()}
+        >
           Sign In
         </Button>
       )}

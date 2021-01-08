@@ -6,7 +6,7 @@ import React from 'react';
 
 import { useAuth } from '@/lib/auth';
 
-import fetcher from '@/utils/fetcher';
+import fetcherGetUser from '@/utils/fetcher';
 import { useAbortController } from '@/utils/hooks';
 
 import EmptyState from '@/components/EmptyState';
@@ -20,13 +20,18 @@ export default function Dashboard() {
   // call the custom hook to abort a fetch and store the signal
   const signal = useAbortController();
 
-  const auth = useAuth();
+  const { user } = useAuth();
+  // Get token if there's one, if not, return undefined
+  const token = user?.token;
 
   // Access the client
-  const { status, error, data } = useQuery('sites', () =>
-    fetcher('/api/sites', signal)
+  const { status, error, data } = useQuery(
+    ['sites', token],
+    () => fetcherGetUser('/api/sites', token, signal),
+    {
+      enabled: !!token, // only runs the query if user is true
+    }
   );
-  console.log(data);
 
   if (status === 'error') {
     return <span>An error has occurred: {error.message}</span>;
@@ -39,6 +44,7 @@ export default function Dashboard() {
       </DashboardShell>
     );
   }
+  console.log(data);
 
   if (status === 'success') {
     return (
@@ -47,4 +53,12 @@ export default function Dashboard() {
       </DashboardShell>
     );
   }
+
+  /* this is one solution I found because if user is false (undefined), the component
+  should return something, so it will return the 'loading' component */
+  return (
+    <DashboardShell>
+      <SiteTableSkeleton />
+    </DashboardShell>
+  );
 }

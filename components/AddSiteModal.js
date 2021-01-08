@@ -46,6 +46,7 @@ const AddSiteModal = ({ children }) => {
       name,
       url,
     });
+
     toast({
       title: 'Success!',
       description: "We've added your site.",

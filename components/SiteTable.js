@@ -5,7 +5,6 @@ import { Link, Table, Thead, Tbody, Tr, Th, Td } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import { parseISO, format } from 'date-fns';
 
-// TODO: Must fix the bug with the NextLink
 const SiteTable = ({ sites }) => (
   <Table variant="simple" backgroundColor="white">
     <Thead>

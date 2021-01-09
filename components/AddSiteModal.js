@@ -18,6 +18,7 @@ import {
   FormLabel,
   Input,
   useToast,
+  FormErrorMessage,
 } from '@chakra-ui/react';
 
 import { useMutation, useQueryClient } from 'react-query';
@@ -34,7 +35,7 @@ const AddSiteModal = ({ children }) => {
   const initialRef = React.useRef();
   const toast = useToast();
   const auth = useAuth();
-  const { register, handleSubmit } = useForm();
+  const { register, handleSubmit, errors } = useForm();
 
   // Use mutation to auto-fetch new data
   const mutation = useMutation((newSite) => createSite(newSite), {
@@ -81,22 +82,24 @@ const AddSiteModal = ({ children }) => {
           <ModalHeader fontWeight="bold">Add Site</ModalHeader>
           <ModalCloseButton />
           <ModalBody pb={6}>
-            <FormControl>
+            <FormControl isInvalid={errors.name}>
               <FormLabel>Name</FormLabel>
               <Input
                 placeholder="My Site"
                 name="name"
-                ref={register({ required: 'Required' })}
+                ref={register({ required: true })}
               />
+              <FormErrorMessage>This field is required</FormErrorMessage>
             </FormControl>
 
-            <FormControl mt={4}>
+            <FormControl mt={4} isInvalid={errors.url}>
               <FormLabel>Link</FormLabel>
               <Input
                 placeholder="https://website.com"
                 name="url"
-                ref={register({ required: 'Required' })}
+                ref={register({ required: true })}
               />
+              <FormErrorMessage>This field is required</FormErrorMessage>
             </FormControl>
           </ModalBody>
 

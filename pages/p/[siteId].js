@@ -10,9 +10,17 @@ import firebase from 'firebase/app';
 import 'firebase/firestore';
 
 import { useRouter } from 'next/router';
+import { useForm } from 'react-hook-form';
 
 import Feedback from '@/components/Feedback';
-import { Box, Button, FormControl, FormLabel, Input } from '@chakra-ui/react';
+import {
+  Box,
+  Button,
+  FormControl,
+  FormLabel,
+  FormErrorMessage,
+  Input,
+} from '@chakra-ui/react';
 
 import { useAuth } from '@/lib/auth';
 import { createFeedback } from '@/lib/db';
@@ -46,15 +54,14 @@ export async function getStaticPaths() {
 export default function SiteFeedBack({ initialFeedback }) {
   const auth = useAuth();
   const router = useRouter();
-  const inputEl = React.useRef(null);
+  const { register, handleSubmit, errors } = useForm();
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const onCreateFeedback = (data) => {
     const newFeedback = {
       author: auth.user.name,
       authorId: auth.user.uid,
       siteId: router.query.siteId,
-      text: inputEl.current.value,
+      text: data.comment,
       createdAt: firebase.firestore.FieldValue.serverTimestamp(),
       provider: auth.user.provider,
       status: 'pending',
@@ -70,11 +77,12 @@ export default function SiteFeedBack({ initialFeedback }) {
       maxWidth="700px"
       margin="0 auto"
     >
-      <Box as="form" onSubmit={handleSubmit}>
-        <FormControl my={8}>
+      <Box as="form" onSubmit={handleSubmit(onCreateFeedback)}>
+        <FormControl isInvalid={errors.comment} my={8}>
           <FormLabel htmlFor="comment">Comment</FormLabel>
           <Input
-            ref={inputEl}
+            name="comment"
+            ref={register({ required: true })}
             type="comment"
             id="comment"
             placeholder="Leave a comment"
@@ -82,6 +90,7 @@ export default function SiteFeedBack({ initialFeedback }) {
           <Button mt={2} type="submit" fontWeight="bold">
             Add Comment
           </Button>
+          <FormErrorMessage>This field is required</FormErrorMessage>
         </FormControl>
       </Box>
       {initialFeedback.map((feedback) => (

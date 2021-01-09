@@ -8,13 +8,7 @@ import theme from '@/styles/theme';
 
 import { AuthProvider } from '@/lib/auth';
 
-import {
-  useQuery,
-  useMutation,
-  useQueryClient,
-  QueryClient,
-  QueryClientProvider,
-} from 'react-query';
+import { QueryClient, QueryClientProvider } from 'react-query';
 
 // Create a client
 const queryClient = new QueryClient();

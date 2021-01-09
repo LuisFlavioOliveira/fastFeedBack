@@ -1,6 +1,8 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable import/no-unresolved */
 import React from 'react';
+import firebase from 'firebase/app';
+import 'firebase/firestore';
 
 import {
   Modal,
@@ -42,7 +44,7 @@ const AddSiteModal = ({ children }) => {
   const onCreateSite = ({ name, url }) => {
     mutation.mutate({
       authorId: auth.user.uid,
-      createdAt: new Date().toISOString(),
+      createdAt: firebase.firestore.FieldValue.serverTimestamp(),
       name,
       url,
     });

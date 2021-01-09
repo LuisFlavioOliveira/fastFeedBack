@@ -44,12 +44,15 @@ export default function Dashboard() {
       </DashboardShell>
     );
   }
-  console.log(data);
 
   if (status === 'success') {
     return (
       <DashboardShell>
-        {data.sites ? <SiteTable sites={data.sites} /> : <EmptyState />}
+        {data.sites.length > 0 ? (
+          <SiteTable sites={data.sites} />
+        ) : (
+          <EmptyState />
+        )}
       </DashboardShell>
     );
   }

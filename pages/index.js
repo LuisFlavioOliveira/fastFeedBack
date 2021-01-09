@@ -1,21 +1,12 @@
+/* eslint-disable react/no-danger */
 /* eslint-disable import/no-unresolved */
 /* eslint-disable react/button-has-type */
 /* eslint-disable no-shadow */
-
-import {
-  Button,
-  Head,
-  ButtonGroup,
-  Heading,
-  Text,
-  Code,
-  Box,
-  Flex,
-} from '@chakra-ui/react';
+import Head from 'next/head';
+import { Button, Text, Flex } from '@chakra-ui/react';
 import { FastFeedbackIcon } from 'public/icons';
 
 import { useAuth } from '@/lib/auth';
-import EmptyState from '@/components/EmptyState';
 
 export default function Home() {
   const auth = useAuth();
@@ -29,6 +20,18 @@ export default function Home() {
       maxW="4OOpx"
       margin="0 auto"
     >
+      <Head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+          if (document.cookie && document.cookie.includes('fast-feedback-auth')) {
+            window.location.href = "/dashboard"
+          }
+        `,
+          }}
+        />
+        <title>Fast Feedback</title>
+      </Head>
       <FastFeedbackIcon color="black.500" boxSize="64px" mb={2} />
       <Text mb={4}>
         <Text as="span" fontWeight="bold" display="inline">

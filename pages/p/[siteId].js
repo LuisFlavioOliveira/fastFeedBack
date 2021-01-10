@@ -51,7 +51,7 @@ export async function getStaticPaths() {
   };
 }
 
-export default function SiteFeedBack({ initialFeedback }) {
+export default function FeedbackPage({ initialFeedback }) {
   const auth = useAuth();
   const router = useRouter();
   const { register, handleSubmit, errors } = useForm();

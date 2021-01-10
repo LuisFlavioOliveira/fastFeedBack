@@ -6,7 +6,7 @@ import React from 'react';
 
 import { useAuth } from '@/lib/auth';
 
-import fetcherGetUser from '@/utils/fetcher';
+import fetcher from '@/utils/fetcher';
 import { useAbortController } from '@/utils/hooks';
 
 import EmptyState from '@/components/EmptyState';
@@ -15,6 +15,7 @@ import DashboardShell from '@/components/DashboardShell';
 import FeedbackTable from '@/components/FeedbackTable';
 
 import { useQuery } from 'react-query';
+import { FeedbackTableHeader } from '@/components/FeedbackTableHeader';
 
 export default function MyFeedback() {
   // call the custom hook to abort a fetch and store the signal
@@ -27,7 +28,7 @@ export default function MyFeedback() {
   // Access the client
   const { status, error, data } = useQuery(
     ['feedback', token],
-    () => fetcherGetUser('/api/feedback', token, signal),
+    () => fetcher('/api/feedback', token, signal),
     {
       enabled: !!token, // only runs the query if user is true
     }
@@ -40,6 +41,7 @@ export default function MyFeedback() {
   if (status === 'loading') {
     return (
       <DashboardShell>
+        <FeedbackTableHeader />
         <SiteTableSkeleton />
       </DashboardShell>
     );
@@ -48,6 +50,7 @@ export default function MyFeedback() {
   if (status === 'success') {
     return (
       <DashboardShell>
+        <FeedbackTableHeader />
         {data.feedback.length > 0 ? (
           <FeedbackTable feedbacks={data.feedback} />
         ) : (
@@ -61,6 +64,7 @@ export default function MyFeedback() {
     should return something, so it will return the 'loading' component */
   return (
     <DashboardShell>
+      <FeedbackTableHeader />
       <SiteTableSkeleton />
     </DashboardShell>
   );

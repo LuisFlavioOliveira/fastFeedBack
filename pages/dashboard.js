@@ -6,7 +6,7 @@ import React from 'react';
 
 import { useAuth } from '@/lib/auth';
 
-import fetcherGetUser from '@/utils/fetcher';
+import fetcher from '@/utils/fetcher';
 import { useAbortController } from '@/utils/hooks';
 
 import EmptyState from '@/components/EmptyState';
@@ -15,6 +15,7 @@ import DashboardShell from '@/components/DashboardShell';
 import SiteTable from '@/components/SiteTable';
 
 import { useQuery } from 'react-query';
+import { SiteTableHeader } from '@/components/SiteTableHeader';
 
 export default function Dashboard() {
   // call the custom hook to abort a fetch and store the signal
@@ -27,7 +28,7 @@ export default function Dashboard() {
   // Access the client
   const { status, error, data } = useQuery(
     ['sites', token],
-    () => fetcherGetUser('/api/sites', token, signal),
+    () => fetcher('/api/sites', token, signal),
     {
       enabled: !!token, // only runs the query if user is true
     }
@@ -40,6 +41,7 @@ export default function Dashboard() {
   if (status === 'loading') {
     return (
       <DashboardShell>
+        <SiteTableHeader />
         <SiteTableSkeleton />
       </DashboardShell>
     );
@@ -48,6 +50,7 @@ export default function Dashboard() {
   if (status === 'success') {
     return (
       <DashboardShell>
+        <SiteTableHeader />
         {data.sites.length > 0 ? (
           <SiteTable sites={data.sites} />
         ) : (
@@ -61,6 +64,7 @@ export default function Dashboard() {
   should return something, so it will return the 'loading' component */
   return (
     <DashboardShell>
+      <SiteTableHeader />
       <SiteTableSkeleton />
     </DashboardShell>
   );

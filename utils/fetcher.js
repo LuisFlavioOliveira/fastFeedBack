@@ -1,4 +1,4 @@
-async function fetcherGetUser(url, token, signal = null) {
+async function fetcher(url, token, signal = null) {
   const response = await fetch(url, {
     method: 'GET',
     headers: new Headers({ 'Content-Type': 'application/json', token }),
@@ -12,4 +12,4 @@ async function fetcherGetUser(url, token, signal = null) {
   return sites;
 }
 
-export default fetcherGetUser;
+export default fetcher;

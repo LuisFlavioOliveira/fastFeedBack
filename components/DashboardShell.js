@@ -1,20 +1,12 @@
 /* eslint-disable import/no-unresolved */
 
 import React from 'react';
-import {
-  Box,
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  Heading,
-  Button,
-  Flex,
-  Link,
-  Avatar,
-} from '@chakra-ui/react';
+import NextLink from 'next/link';
+
+import { Box, Button, Flex, Link, Avatar } from '@chakra-ui/react';
+
 import { useAuth } from '@/lib/auth';
 import { FastFeedbackIcon } from '../public/icons';
-import AddSiteModal from './AddSiteModal';
 
 // eslint-disable-next-line react/prop-types
 const DashboardShell = ({ children }) => {
@@ -40,9 +32,15 @@ const DashboardShell = ({ children }) => {
           h="60px"
         >
           <Flex>
-            <FastFeedbackIcon boxSize="24px" mr={8} />
-            <Link mr={4}>Sites</Link>
-            <Link>Feedback</Link>
+            <NextLink href="/" passHref>
+              <FastFeedbackIcon boxSize="24px" mr={8} />
+            </NextLink>
+            <NextLink href="/dashboard" passHref>
+              <Link mr={4}>Sites</Link>
+            </NextLink>
+            <NextLink href="/feedback" passHref>
+              <Link>Feedback</Link>
+            </NextLink>
           </Flex>
           <Flex justifyContent="center" alignItems="center">
             {user && (

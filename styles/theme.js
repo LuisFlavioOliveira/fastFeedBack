@@ -1,4 +1,3 @@
-import React from 'react';
 import { theme as extendTheme } from '@chakra-ui/react';
 
 const theme = {
@@ -8,6 +7,7 @@ const theme = {
       html: {
         minW: '360px',
         scrollBehavior: 'smooth',
+        backgroundColor: '#edf2f7',
         ...extendTheme.fonts,
         fontFamily: `Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol"`,
         fontWeights: {

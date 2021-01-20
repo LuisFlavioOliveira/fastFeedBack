@@ -79,15 +79,31 @@ export default function FeedbackPage({ initialFeedback }) {
     >
       <Box as="form" onSubmit={handleSubmit(onCreateFeedback)}>
         <FormControl isInvalid={errors.comment} my={8}>
-          <FormLabel htmlFor="comment">Comment</FormLabel>
+          <FormLabel fontWeight="bold" htmlFor="comment">
+            Comment
+          </FormLabel>
           <Input
             name="comment"
+            backgroundColor="white"
             ref={register({ required: true })}
             type="comment"
             id="comment"
             placeholder="Leave a comment"
           />
-          <Button mt={2} type="submit" fontWeight="bold">
+          <Button
+            mt={4}
+            size="lg"
+            fontWeight="bold"
+            type="submit"
+            backgroundColor="white"
+            color="gray.900"
+            variant="outline"
+            _hover={{ bg: 'teal.300' }}
+            _active={{
+              bg: 'teal.300',
+              transform: 'scale(0.95)',
+            }}
+          >
             Add Comment
           </Button>
           <FormErrorMessage>This field is required</FormErrorMessage>

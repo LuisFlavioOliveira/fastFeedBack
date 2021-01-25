@@ -3,7 +3,7 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import * as React from 'react';
 
-import { ChakraProvider, Global } from '@chakra-ui/react';
+import { ChakraProvider } from '@chakra-ui/react';
 import theme from '@/styles/theme';
 
 import { AuthProvider } from '@/lib/auth';

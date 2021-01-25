@@ -5,7 +5,7 @@
 /* eslint-disable react/button-has-type */
 /* eslint-disable no-shadow */
 import Head from 'next/head';
-import { Button, Text, Flex, Heading, HStack, Box } from '@chakra-ui/react';
+import { Button, Text, Flex, HStack, Box } from '@chakra-ui/react';
 import { FastFeedbackIcon } from 'public/icons';
 import { FaGithub } from 'react-icons/fa';
 import { FcGoogle } from 'react-icons/fc';

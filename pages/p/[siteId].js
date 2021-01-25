@@ -115,7 +115,7 @@ export default function FeedbackPage({ initialFeedback }) {
           <FormErrorMessage>This field is required</FormErrorMessage>
         </FormControl>
       </Box>
-      {initialFeedback.map((feedback) => (
+      {initialFeedback?.map((feedback) => (
         <Feedback key={feedback.id} {...feedback} />
       ))}
     </Box>

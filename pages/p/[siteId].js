@@ -47,14 +47,18 @@ export async function getStaticPaths() {
   }));
   return {
     paths,
-    fallback: false,
+    fallback: true,
   };
 }
 
 export default function FeedbackPage({ initialFeedback }) {
   const auth = useAuth();
   const router = useRouter();
-  const { register, handleSubmit, errors } = useForm();
+  const { register, handleSubmit, errors, reset } = useForm({
+    defaultValues: {
+      comment: '',
+    },
+  });
 
   const onCreateFeedback = (data) => {
     const newFeedback = {
@@ -68,6 +72,7 @@ export default function FeedbackPage({ initialFeedback }) {
     };
 
     createFeedback(newFeedback);
+    reset();
   };
   return (
     <Box
@@ -98,6 +103,7 @@ export default function FeedbackPage({ initialFeedback }) {
             backgroundColor="white"
             color="gray.900"
             variant="outline"
+            isDisabled={router.isFallback}
             _hover={{ bg: 'teal.300' }}
             _active={{
               bg: 'teal.300',
@@ -109,7 +115,7 @@ export default function FeedbackPage({ initialFeedback }) {
           <FormErrorMessage>This field is required</FormErrorMessage>
         </FormControl>
       </Box>
-      {initialFeedback.map((feedback) => (
+      {initialFeedback?.map((feedback) => (
         <Feedback key={feedback.id} {...feedback} />
       ))}
     </Box>

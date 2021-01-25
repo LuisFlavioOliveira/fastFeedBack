@@ -1,3 +1,4 @@
+/* eslint-disable array-callback-return */
 import pino from 'pino';
 import { logflarePinoVercel } from 'pino-logflare';
 

@@ -38,12 +38,33 @@ const AddSiteModal = ({ children }) => {
   const { register, handleSubmit, errors } = useForm();
 
   // Use mutation to auto-fetch new data
-  const mutation = useMutation((newSite) => createSite(newSite), {
-    onSuccess: () => queryClient.invalidateQueries('sites'),
+  const addNewSite = useMutation((newSite) => createSite(newSite), {
+    // When mutate is called:
+    onMutate: async (newData) => {
+      // Cancel any outgoing refetches (so they don't overwrite our optimistic update)
+      await queryClient.cancelQueries('sites');
+
+      // Snapshot the previous value
+      const previousSites = queryClient.getQueryData('sites');
+
+      // Optimistically update to the new value
+      queryClient.setQueryData('sites', (old) => [old, newData]);
+
+      // Return a context object with the snapshotted value
+      return { previousSites };
+    },
+    // If the mutation fails, use the context returned from onMutate to roll back
+    onError: (err, newData, context) => {
+      queryClient.setQueryData('sites', context.previousSites);
+    },
+    // Always refetch after error or success:
+    onSettled: () => {
+      queryClient.invalidateQueries('sites');
+    },
   });
 
   const onCreateSite = ({ name, url }) => {
-    mutation.mutate({
+    addNewSite.mutate({
       authorId: auth.user.uid,
       createdAt: firebase.firestore.FieldValue.serverTimestamp(),
       name,

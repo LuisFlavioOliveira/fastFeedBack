@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -8,7 +9,7 @@ import {
 
 import AddSiteModal from './AddSiteModal';
 
-export function SiteTableHeader() {
+export function SiteTableHeader({ isPaidAccount }) {
   return (
     <>
       <Breadcrumb>
@@ -18,7 +19,7 @@ export function SiteTableHeader() {
       </Breadcrumb>
       <Flex justifyContent="space-between">
         <Heading mb={8}>My Sites</Heading>
-        <AddSiteModal>+ Add Site</AddSiteModal>
+        {isPaidAccount && <AddSiteModal>+ Add Site</AddSiteModal>}
       </Flex>
     </>
   );

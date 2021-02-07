@@ -16,6 +16,7 @@ import SiteTable from '@/components/SiteTable';
 
 import { useQuery } from 'react-query';
 import { SiteTableHeader } from '@/components/SiteTableHeader';
+import UpgradeEmptyState from '@/components/UpgradeEmptyState';
 
 export default function Dashboard() {
   // call the custom hook to abort a fetch and store the signal
@@ -34,6 +35,8 @@ export default function Dashboard() {
     }
   );
 
+  const isPaidAccount = user?.stripeRole;
+
   if (status === 'error') {
     return <span>An error has occurred: {error.message}</span>;
   }
@@ -48,14 +51,18 @@ export default function Dashboard() {
   }
 
   if (status === 'success') {
+    if (data.sites.length > 0) {
+      return (
+        <DashboardShell>
+          <SiteTableHeader />
+          <SiteTable sites={data.sites} />
+        </DashboardShell>
+      );
+    }
     return (
       <DashboardShell>
         <SiteTableHeader />
-        {data.sites.length > 0 ? (
-          <SiteTable sites={data.sites} />
-        ) : (
-          <EmptyState />
-        )}
+        {isPaidAccount ? <EmptyState /> : <UpgradeEmptyState />}
       </DashboardShell>
     );
   }
@@ -64,7 +71,7 @@ export default function Dashboard() {
   should return something, so it will return the 'loading' component */
   return (
     <DashboardShell>
-      <SiteTableHeader />
+      <SiteTableHeader isPaidAccount={isPaidAccount} />
       <SiteTableSkeleton />
     </DashboardShell>
   );

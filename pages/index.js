@@ -50,7 +50,6 @@ export default function Home({ allFeedback }) {
         `,
               }}
             />
-            <title>Fast Feedback</title>
           </Head>
           <FastFeedbackIcon color="black.500" boxSize="48px" mb={2} />
           <Text mb={4} fontSize="lg" py={4}>

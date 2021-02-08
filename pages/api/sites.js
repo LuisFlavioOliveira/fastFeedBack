@@ -11,7 +11,7 @@ export default async (req, res) => {
     const sites = await getUserSites(uid);
     res.statusCode = 200;
     res.setHeader('Content-Type', 'application/json');
-    res.end(JSON.stringify({ sites: [] }));
+    res.end(JSON.stringify({ sites }));
   } catch (error) {
     const headers = formatObjectKeys(req.headers);
 

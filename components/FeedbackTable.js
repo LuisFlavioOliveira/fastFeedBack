@@ -1,50 +1,28 @@
+/* eslint-disable react/jsx-props-no-spreading */
 /* eslint-disable react/prop-types */
 import React from 'react';
-import {
-  Code,
-  Table,
-  Thead,
-  Tbody,
-  Tr,
-  Th,
-  Td,
-  Switch,
-} from '@chakra-ui/react';
-import { RemoveButton } from './RemoveButton';
+import { Table, Thead, Tbody, Tr, Th } from '@chakra-ui/react';
+import FeedbackRow from './FeedbackRow';
 
-const FeedbackTable = ({ feedbacks }) => (
-  <Table variant="simple" backgroundColor="white">
-    <Thead>
-      <Tr backgroundColor="teal.200">
-        <Th>Name</Th>
-        <Th>Feedback</Th>
-        <Th>Route</Th>
-        <Th>Visible</Th>
-        <Th>Remove</Th>
-        <Th />
-      </Tr>
-    </Thead>
-    <Tbody>
-      {feedbacks.map((feedback) => (
-        <Tr key={feedback.id}>
-          <Td fontWeight="bold">{feedback.author}</Td>
-          <Td>{feedback.text}</Td>
-          <Td>
-            <Code>/</Code>
-          </Td>
-          <Td>
-            <Switch
-              colorScheme="green"
-              defaultChecked={feedback.status === 'active'}
-            />
-          </Td>
-          <Td>
-            <RemoveButton feedbackId={feedback.id} />
-          </Td>
+function FeedbackTable({ feedbacks }) {
+  return (
+    <Table variant="simple" backgroundColor="white">
+      <Thead>
+        <Tr backgroundColor="teal.200">
+          <Th>Name</Th>
+          <Th>Feedback</Th>
+          <Th>Route</Th>
+          <Th>Visible</Th>
+          <Th width="50px" />
         </Tr>
-      ))}
-    </Tbody>
-  </Table>
-);
+      </Thead>
+      <Tbody>
+        {feedbacks.map((feedback) => (
+          <FeedbackRow key={feedback.id} {...feedback} />
+        ))}
+      </Tbody>
+    </Table>
+  );
+}
 
 export default FeedbackTable;

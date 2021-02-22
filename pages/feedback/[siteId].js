@@ -9,18 +9,19 @@ import { useAuth } from '@/lib/auth';
 import fetcher from '@/utils/fetcher';
 import { useAbortController } from '@/utils/hooks';
 
-import EmptyState from '@/components/EmptyState';
+import FeedbackEmptyState from '@/components/FeedbackEmptyState';
 import SiteTableSkeleton from '@/components/SiteTableSkeleton';
 import DashboardShell from '@/components/DashboardShell';
-import SiteTable from '@/components/SiteTable';
+import FeedbackTable from '@/components/FeedbackTable';
+import { SiteFeedbackTableHeader } from '@/components/SiteFeedbackTableHeader';
 
 import { useQuery } from 'react-query';
-import { SiteTableHeader } from '@/components/SiteTableHeader';
-import UpgradeEmptyState from '@/components/UpgradeEmptyState';
+import { useRouter } from 'next/router';
 
-export default function Dashboard() {
+export default function SiteFeedback() {
   // call the custom hook to abort a fetch and store the signal
   const signal = useAbortController();
+  const { query } = useRouter();
 
   const { user } = useAuth();
   // Get token if there's one, if not, return undefined
@@ -28,14 +29,12 @@ export default function Dashboard() {
 
   // Access the client
   const { status, error, data } = useQuery(
-    ['sites', token],
-    () => fetcher('/api/sites', token, signal),
+    ['feedback', token],
+    () => fetcher(`/api/feedback/${query.siteId}`, token, signal),
     {
       enabled: !!token, // only runs the query if user is true
     }
   );
-
-  const isPaidAccount = user?.stripeRole;
 
   if (status === 'error') {
     return <span>An error has occurred: {error.message}</span>;
@@ -44,34 +43,30 @@ export default function Dashboard() {
   if (status === 'loading') {
     return (
       <DashboardShell>
-        <SiteTableHeader />
+        <SiteFeedbackTableHeader siteName={data?.site?.name} />
         <SiteTableSkeleton />
       </DashboardShell>
     );
   }
 
   if (status === 'success') {
-    if (data.sites.length > 0) {
-      return (
-        <DashboardShell>
-          <SiteTableHeader />
-          <SiteTable sites={data.sites} />
-        </DashboardShell>
-      );
-    }
     return (
       <DashboardShell>
-        <SiteTableHeader />
-        {isPaidAccount ? <EmptyState /> : <UpgradeEmptyState />}
+        <SiteFeedbackTableHeader siteName={data?.site?.name} />
+        {data.feedback.length > 0 ? (
+          <FeedbackTable feedbacks={data.feedback} />
+        ) : (
+          <FeedbackEmptyState />
+        )}
       </DashboardShell>
     );
   }
 
   /* this is one solution I found because if user is false (undefined), the component
-  should return something, so it will return the 'loading' component */
+      should return something, so it will return the 'loading' component */
   return (
     <DashboardShell>
-      <SiteTableHeader isPaidAccount={isPaidAccount} />
+      <SiteFeedbackTableHeader siteName={data?.site?.name} />
       <SiteTableSkeleton />
     </DashboardShell>
   );

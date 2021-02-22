@@ -13,6 +13,7 @@ import { useRouter } from 'next/router';
 import { useForm } from 'react-hook-form';
 
 import Feedback from '@/components/Feedback';
+
 import {
   Box,
   Button,
@@ -75,13 +76,7 @@ export default function FeedbackPage({ initialFeedback }) {
     reset();
   };
   return (
-    <Box
-      display="flex"
-      flexDirection="column"
-      width="full"
-      maxWidth="700px"
-      margin="0 auto"
-    >
+    <Box display="flex" flexDirection="column" width="full">
       <Box as="form" onSubmit={handleSubmit(onCreateFeedback)}>
         <FormControl isInvalid={errors.comment} my={8}>
           <FormLabel fontWeight="bold" htmlFor="comment">

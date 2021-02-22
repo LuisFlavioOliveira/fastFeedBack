@@ -4,3 +4,7 @@
 https://react-query.tanstack.com/guides/updates-from-mutation-responses
 
 -> Fix orderBy on db-admin.js getUserFeedback
+
+-> Fix /pages/siteId.js because anyone can leave a feedback, even if they aren't authenticated
+
+-> Fix auth.js to push user only after login used

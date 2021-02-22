@@ -18,10 +18,17 @@ const SiteTable = ({ sites }) => (
     <Tbody>
       {sites.map((site) => (
         <Tr key={site.id}>
-          <Td fontWeight="bold">{site.name}</Td>
+          <Td fontWeight="bold">
+            <NextLink href={`/site/${encodeURIComponent(site.id)}`} passHref>
+              <Link fontWeight="bold">{site.name}</Link>
+            </NextLink>
+          </Td>
           <Td>{site.url}</Td>
           <Td>
-            <NextLink href={`/p/${encodeURIComponent(site.id)}`} passHref>
+            <NextLink
+              href={`/feedback/${encodeURIComponent(site.id)}`}
+              passHref
+            >
               <Link color="blue.500" fontWeight="bold">
                 View FeedBack
               </Link>

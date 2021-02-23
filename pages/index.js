@@ -5,17 +5,16 @@
 /* eslint-disable react/button-has-type */
 /* eslint-disable no-shadow */
 import Head from 'next/head';
-import { Button, Text, Flex, HStack, Box } from '@chakra-ui/react';
+import { Button, Text, Flex, Box } from '@chakra-ui/react';
 import { FastFeedbackIcon } from 'public/icons';
-import { FaGithub } from 'react-icons/fa';
-import { FcGoogle } from 'react-icons/fc';
 
 import { useAuth } from '@/lib/auth';
 import { getAllFeedback } from '@/lib/db-admin';
 import Feedback from '@/components/Feedback';
 import FeedbackLink from '@/components/FeedbackLink';
+import LoginButtons from '@/components/LoginButtons';
 
-const SITE_ID = 'ye7nbR7FEGnLiPKrWYvr';
+const SITE_ID = process.env.NEXT_PUBLIC_HOME_PAGE_SITE_ID;
 
 export async function getStaticProps(context) {
   const { feedback } = await getAllFeedback(SITE_ID);
@@ -82,37 +81,7 @@ export default function Home({ allFeedback }) {
               View Dashboard
             </Button>
           ) : (
-            <HStack spacing="24px">
-              <Button
-                onClick={() => auth.signinWithGithub()}
-                backgroundColor="gray.900"
-                colorScheme="white"
-                fontWeight="bold"
-                leftIcon={<FaGithub />}
-                _hover={{ bg: 'gray.700' }}
-                _active={{
-                  bg: 'gray.800',
-                  transform: 'scale(0.95)',
-                }}
-              >
-                Sign In with GitHub
-              </Button>
-              <Button
-                onClick={() => auth.signinWithGoogle()}
-                backgroundColor="white"
-                colorScheme="gray.900"
-                variant="outline"
-                fontWeight="bold"
-                leftIcon={<FcGoogle />}
-                _hover={{ bg: 'blue.100' }}
-                _active={{
-                  bg: 'blue.100',
-                  transform: 'scale(0.95)',
-                }}
-              >
-                Sign In with Google
-              </Button>
-            </HStack>
+            <LoginButtons />
           )}
         </Flex>
       </Box>
@@ -123,6 +92,7 @@ export default function Home({ allFeedback }) {
         maxWidth="700px"
         margin="0 auto"
         mt={8}
+        px={4}
       >
         <FeedbackLink siteId={SITE_ID} />
         {allFeedback.map((feedback) => (

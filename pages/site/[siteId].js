@@ -14,6 +14,7 @@ import { useForm } from 'react-hook-form';
 
 import Feedback from '@/components/Feedback';
 import DashboardShell from '@/components/DashboardShell';
+import LoginButtons from '@/components/LoginButtons';
 
 import {
   Box,
@@ -76,6 +77,29 @@ export default function FeedbackPage({ initialFeedback }) {
     createFeedback(newFeedback);
     reset();
   };
+
+  const LoginOrLeaveFeedback = () =>
+    auth.user ? (
+      <Button
+        mt={4}
+        size="lg"
+        fontWeight="bold"
+        type="submit"
+        backgroundColor="white"
+        color="gray.900"
+        variant="outline"
+        isDisabled={router.isFallback}
+        _hover={{ bg: 'teal.300' }}
+        _active={{
+          bg: 'teal.300',
+          transform: 'scale(0.95)',
+        }}
+      >
+        Leave Feedback
+      </Button>
+    ) : (
+      <LoginButtons />
+    );
   return (
     <DashboardShell>
       <Box
@@ -98,24 +122,9 @@ export default function FeedbackPage({ initialFeedback }) {
               id="comment"
               placeholder="Leave a comment"
             />
-            <Button
-              mt={4}
-              size="lg"
-              fontWeight="bold"
-              type="submit"
-              backgroundColor="white"
-              color="gray.900"
-              variant="outline"
-              isDisabled={router.isFallback}
-              _hover={{ bg: 'teal.300' }}
-              _active={{
-                bg: 'teal.300',
-                transform: 'scale(0.95)',
-              }}
-            >
-              Add Comment
-            </Button>
+
             <FormErrorMessage>This field is required</FormErrorMessage>
+            {!auth.loading && <LoginOrLeaveFeedback />}
           </FormControl>
         </Box>
         {initialFeedback?.map((feedback) => (
